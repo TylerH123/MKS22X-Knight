@@ -38,37 +38,19 @@ public class KnightBoard{
       return true;
     }
     for (int r = 0; r < board.length; r++){
-      if (solve(startingRow-2,startingCol+1,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
+      if (solve(startingRow-2,startingCol+1,level+1) ||
+          solve(startingRow-2,startingCol-1,level+1) ||
+          solve(startingRow+1,startingCol-2,level+1) ||
+          solve(startingRow-1,startingCol-2,level+1) ||
+          solve(startingRow-1,startingCol+2,level+1) ||
+          solve(startingRow+1,startingCol+2,level+1) ||
+          solve(startingRow-2,startingCol-1,level+1) ||
+          solve(startingRow-2,startingCol+1,level+1)){
+            board[startingRow][startingCol] = level;
+            return true;
       }
-      if (solve(startingRow-2,startingCol-1,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
-      }
-      if (solve(startingRow+1,startingCol-2,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
-      }
-      if (solve(startingRow-1,startingCol-2,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
-      }
-      if (solve(startingRow-1,startingCol+2,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
-      }
-      if (solve(startingRow+1,startingCol+2,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
-      }
-      if (solve(startingRow-2,startingCol-1,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
-      }
-      if (solve(startingRow-2,startingCol+1,level+1)){
-        board[startingRow][startingCol] = level;
-        return true;
+      else{
+
       }
     }
     return false;
