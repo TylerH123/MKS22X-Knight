@@ -10,9 +10,9 @@ public class KnightBoard{
   public String toString(){
     String output = "";
     for (int r = 0; r < board.length; r++){
-      for (int c = 0; c < board[r].length;r++){
+      for (int c = 0; c < board[r].length;c++){
         if (board[r][c] == 0){
-          output += "_ ";
+          output += " _ ";
         }
         else if (board[r][c] < 10){
           output += " " + board[r][c] + " ";
@@ -21,6 +21,7 @@ public class KnightBoard{
           output += board[r][c] + " ";
         }
       }
+      output += "\n";
     }
     return output;
   }
