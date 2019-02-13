@@ -3,7 +3,7 @@ public class KnightBoard{
   private int[][] board;
 
   public KnightBoard(int startingRows, int startingCols){
-    if (startingRows < 0 || startingCols < 0) throw new IllegalArgumentException();
+    if (startingRows <= 0 || startingCols <= 0) throw new IllegalArgumentException();
     board = new int[startingRows][startingCols];
   }
   //string representation of the board
@@ -31,7 +31,47 @@ public class KnightBoard{
   }
 
   public boolean solve(int startingRow, int startingCol,int level){
-    return false; 
+    if (startingRow < 0 || startingRow > board.length || startingCol < 0 || startingCol > board[0].length){
+      return false;
+    }
+    if (level == board.length * board[0].length){
+      return true;
+    }
+    for (int r = 0; r < board.length; r++){
+      if (solve(startingRow-2,startingCol+1,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+      if (solve(startingRow-2,startingCol-1,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+      if (solve(startingRow+1,startingCol-2,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+      if (solve(startingRow-1,startingCol-2,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+      if (solve(startingRow-1,startingCol+2,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+      if (solve(startingRow+1,startingCol+2,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+      if (solve(startingRow-2,startingCol-1,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+      if (solve(startingRow-2,startingCol+1,level+1)){
+        board[startingRow][startingCol] = level;
+        return true;
+      }
+    }
+    return false;
   }
   public static void main(String[] args){
     KnightBoard k = new KnightBoard(4,4);
