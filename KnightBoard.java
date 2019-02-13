@@ -11,7 +11,10 @@ public class KnightBoard{
     String output = "";
     for (int r = 0; r < board.length; r++){
       for (int c = 0; c < board[r].length;r++){
-        if (board[r][c] < 10){
+        if (board[r][c] == 0){
+          output += "_ ";
+        }
+        else if (board[r][c] < 10){
           output += " " + board[r][c] + " ";
         }
         else{
@@ -20,5 +23,12 @@ public class KnightBoard{
       }
     }
     return output;
+  }
+
+  public static void main(String[] args){
+    KnightBoard k = new KnightBoard(4,4);
+    k.board[0][1] = 10;
+    k.board[0][2] = 1;
+    System.out.print(k.toString());
   }
 }
