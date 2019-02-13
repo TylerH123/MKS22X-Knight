@@ -26,6 +26,13 @@ public class KnightBoard{
     return output;
   }
 
+  public boolean solve(int startingRow, int startingCol){
+    return solve(startingRow,startingCol,0);
+  }
+
+  public boolean solve(int startingRow, int startingCol,int level){
+    return false; 
+  }
   public static void main(String[] args){
     KnightBoard k = new KnightBoard(4,4);
     k.board[0][1] = 10;
