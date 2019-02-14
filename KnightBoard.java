@@ -27,31 +27,36 @@ public class KnightBoard{
   }
 
   public boolean solve(int startingRow, int startingCol){
-    return solve(startingRow,startingCol,1);
+    return solveH(startingRow,startingCol,1);
   }
 
-  public boolean solve(int startingRow, int startingCol,int level){
-    if (startingRow < 0 || startingRow > board.length || startingCol < 0 || startingCol > board[0].length){
+  private boolean solveH(int row, int col,int level){
+    //if loc is outside board, return false
+    if (row < 0 || row >= board.length || col < 0 || col >= board[0].length){
       return false;
     }
     if (level == board.length * board[0].length + 1){
       return true;
     }
+    //if location r,c is occupied return false
+    if (board[row][col] != 0){
+      return false;
+    }
     for (int r = 0; r < board.length; r++){
-      if (moveKnight(startingRow,startingCol,level)){
-        if (solve(startingRow-2,startingCol+1,level+1) ||
-            solve(startingRow-2,startingCol-1,level+1) ||
-            solve(startingRow+1,startingCol-2,level+1) ||
-            solve(startingRow-1,startingCol-2,level+1) ||
-            solve(startingRow-1,startingCol+2,level+1) ||
-            solve(startingRow+1,startingCol+2,level+1) ||
-            solve(startingRow+2,startingCol-1,level+1) ||
-            solve(startingRow+2,startingCol+1,level+1)){
+      if (moveKnight(row,col,level)){
+        if (solveH(row-2,col+1,level+1) ||
+            solveH(row-2,col-1,level+1) ||
+            solveH(row+2,col-1,level+1) ||
+            solveH(row+2,col+1,level+1) ||
+            solveH(row-1,col+2,level+1) ||
+            solveH(row+1,col+2,level+1) ||
+            solveH(row-1,col-2,level+1) ||
+            solveH(row+1,col-2,level+1)){
             return true;
         }
       }
       else{
-        moveBack(startingRow,startingCol);
+        moveBack(row,col);
         level--;
       }
     }
