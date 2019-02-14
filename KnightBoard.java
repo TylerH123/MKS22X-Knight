@@ -38,8 +38,7 @@ public class KnightBoard{
       return true;
     }
     for (int r = 0; r < board.length; r++){
-      if (board[startingRow][startingCol] == 0){
-        board[startingRow][startingCol] = level;
+      if (moveKnight(startingRow,startingCol,level)){
         if (solve(startingRow-2,startingCol+1,level+1) ||
             solve(startingRow-2,startingCol-1,level+1) ||
             solve(startingRow+1,startingCol-2,level+1) ||
@@ -49,13 +48,24 @@ public class KnightBoard{
             solve(startingRow+2,startingCol-1,level+1) ||
             solve(startingRow+2,startingCol+1,level+1)){
             return true;
-          }
         }
+      }
       else{
         board[startingRow][startingCol] = 0;
       }
     }
     return false;
+  }
+  //moves knight to location r,c and places num at location to mark it
+  private boolean moveKnight(int r, int c, int num){
+    if (board[r][c] == 0){
+      board[r][c] = num;
+      return true;
+    }
+    return false;
+  }
+  private boolean moveBack(int r, int c){
+
   }
   public static void main(String[] args){
     KnightBoard k = new KnightBoard(5,5);
