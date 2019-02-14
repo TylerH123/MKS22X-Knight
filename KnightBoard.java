@@ -51,7 +51,8 @@ public class KnightBoard{
         }
       }
       else{
-        board[startingRow][startingCol] = 0;
+        moveBack(startingRow,startingCol);
+        level--;
       }
     }
     return false;
@@ -64,8 +65,13 @@ public class KnightBoard{
     }
     return false;
   }
+  //deletes knight at location r,c
   private boolean moveBack(int r, int c){
-
+    if (board[r][c] != 0){
+      board[r][c] = 0;
+      return true;
+    }
+    return false;
   }
   public static void main(String[] args){
     KnightBoard k = new KnightBoard(5,5);
