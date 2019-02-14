@@ -43,8 +43,15 @@ public class KnightBoard{
     if (board[row][col] != 0){
       return false;
     }
-
-    return false;
+    //go through all possible locations the knight can go to
+    return solveH(row-2,col+1,level+1) ||
+           solveH(row-2,col-1,level+1) ||
+           solveH(row+2,col-1,level+1) ||
+           solveH(row+2,col+1,level+1) ||
+           solveH(row-1,col+2,level+1) ||
+           solveH(row+1,col+2,level+1) ||
+           solveH(row-1,col-2,level+1) ||
+           solveH(row+1,col-2,level+1);
   }
   public static void main(String[] args){
     KnightBoard k = new KnightBoard(5,5);
