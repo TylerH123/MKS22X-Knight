@@ -27,38 +27,42 @@ public class KnightBoard{
   }
 
   public boolean solve(int startingRow, int startingCol){
-    return solve(startingRow,startingCol,0);
+    return solve(startingRow,startingCol,1);
   }
 
   public boolean solve(int startingRow, int startingCol,int level){
     if (startingRow < 0 || startingRow > board.length || startingCol < 0 || startingCol > board[0].length){
       return false;
     }
-    if (level == board.length * board[0].length){
+    if (level == board.length * board[0].length + 1){
       return true;
     }
     for (int r = 0; r < board.length; r++){
-      if (solve(startingRow-2,startingCol+1,level+1) ||
-          solve(startingRow-2,startingCol-1,level+1) ||
-          solve(startingRow+1,startingCol-2,level+1) ||
-          solve(startingRow-1,startingCol-2,level+1) ||
-          solve(startingRow-1,startingCol+2,level+1) ||
-          solve(startingRow+1,startingCol+2,level+1) ||
-          solve(startingRow-2,startingCol-1,level+1) ||
-          solve(startingRow-2,startingCol+1,level+1)){
-            board[startingRow][startingCol] = level;
+      if (board[startingRow][startingCol] == 0){
+        board[startingRow][startingCol] = level;
+        if (solve(startingRow-2,startingCol+1,level+1) ||
+            solve(startingRow-2,startingCol-1,level+1) ||
+            solve(startingRow+1,startingCol-2,level+1) ||
+            solve(startingRow-1,startingCol-2,level+1) ||
+            solve(startingRow-1,startingCol+2,level+1) ||
+            solve(startingRow+1,startingCol+2,level+1) ||
+            solve(startingRow+2,startingCol-1,level+1) ||
+            solve(startingRow+2,startingCol+1,level+1)){
             return true;
-      }
+          }
+        }
       else{
-
+        board[startingRow][startingCol] = 0;
       }
     }
     return false;
   }
   public static void main(String[] args){
-    KnightBoard k = new KnightBoard(4,4);
-    k.board[0][1] = 10;
-    k.board[0][2] = 1;
-    System.out.print(k.toString());
+    KnightBoard k = new KnightBoard(5,5);
+    //k.board[0][1] = 10;
+    //k.board[0][2] = 1;
+    //System.out.print(k.toString());
+    System.out.println(k.solve(0,0));
+    System.out.println(k.toString());
   }
 }
