@@ -43,18 +43,26 @@ public class KnightBoard{
     if (board[row][col] != 0){
       return false;
     }
+    //if location r,c is not occupied, then move knight there
+    board[row][col] = level;
     //go through all possible locations the knight can go to
-    return solveH(row-2,col+1,level+1) ||
-           solveH(row-2,col-1,level+1) ||
-           solveH(row+2,col-1,level+1) ||
-           solveH(row+2,col+1,level+1) ||
-           solveH(row-1,col+2,level+1) ||
-           solveH(row+1,col+2,level+1) ||
-           solveH(row-1,col-2,level+1) ||
-           solveH(row+1,col-2,level+1);
+    if (solveH(row-2,col+1,level+1) ||
+        solveH(row-2,col-1,level+1) ||
+        solveH(row+2,col-1,level+1) ||
+        solveH(row+2,col+1,level+1) ||
+        solveH(row-1,col+2,level+1) ||
+        solveH(row+1,col+2,level+1) ||
+        solveH(row-1,col-2,level+1) ||
+        solveH(row+1,col-2,level+1))
+        return true;
+    else{
+      //if none of the moves are possible, then backtrack and remove the knight
+      board[row][col] = 0;
+    }
+    return false;
   }
   public static void main(String[] args){
-    KnightBoard k = new KnightBoard(5,5);
+    KnightBoard k = new KnightBoard(5,4);
     //k.board[0][1] = 10;
     //k.board[0][2] = 1;
     //System.out.print(k.toString());
