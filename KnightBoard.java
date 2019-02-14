@@ -35,6 +35,7 @@ public class KnightBoard{
     if (row < 0 || row >= board.length || col < 0 || col >= board[0].length){
       return false;
     }
+    //if all pieces on the board have been visited then level must be equal to 1 greater than size of board
     if (level == board.length * board[0].length + 1){
       return true;
     }
@@ -42,40 +43,7 @@ public class KnightBoard{
     if (board[row][col] != 0){
       return false;
     }
-    for (int r = 0; r < board.length; r++){
-      if (moveKnight(row,col,level)){
-        if (solveH(row-2,col+1,level+1) ||
-            solveH(row-2,col-1,level+1) ||
-            solveH(row+2,col-1,level+1) ||
-            solveH(row+2,col+1,level+1) ||
-            solveH(row-1,col+2,level+1) ||
-            solveH(row+1,col+2,level+1) ||
-            solveH(row-1,col-2,level+1) ||
-            solveH(row+1,col-2,level+1)){
-            return true;
-        }
-      }
-      else{
-        moveBack(row,col);
-        level--;
-      }
-    }
-    return false;
-  }
-  //moves knight to location r,c and places num at location to mark it
-  private boolean moveKnight(int r, int c, int num){
-    if (board[r][c] == 0){
-      board[r][c] = num;
-      return true;
-    }
-    return false;
-  }
-  //deletes knight at location r,c
-  private boolean moveBack(int r, int c){
-    if (board[r][c] != 0){
-      board[r][c] = 0;
-      return true;
-    }
+
     return false;
   }
   public static void main(String[] args){
