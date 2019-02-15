@@ -82,10 +82,20 @@ public class KnightBoard{
   }
   public int countSolutions(int row, int col, int level){
     int count = 0;
+    if (level == board.length * board[0].length + 1){
+      return count;
+    }
+    int[] v = new int[]{1,2,1,-2,-1,2,-1,-2,2,-1,2,1,-2,1,-2,-1};
+    for (int i = 0; i < v.length; i+=2){
+      if (board[row][col] == 0){
+        board[row][col] = level;
+        count += countSolutions(level+1, row+v[i], col+v[i+1]);
+      }
+    }
     return count;
   }
   public static void main(String[] args){
-    KnightBoard k = new KnightBoard(2,5);
+    KnightBoard k = new KnightBoard(5,5);
     //k.board[0][1] = 10;
     //k.board[0][2] = 1;
     //System.out.print(k.toString());
