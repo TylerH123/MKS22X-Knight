@@ -25,6 +25,10 @@ public class KnightBoard{
     }
     return output;
   }
+  //check to make sure row or col not out of bounds
+  public boolean checkBounds(int row, int col){
+    return (row >= board.length || row < 0 || col >= board[0].length || col < 0);
+  }
   //check board to make sure it starts with zeros
   public boolean checkBoard(){
     for (int r = 0; r < board.length;r++){
@@ -36,13 +40,13 @@ public class KnightBoard{
   }
   public boolean solve(int startingRow, int startingCol){
     if (!checkBoard()) throw new IllegalStateException();
-    if (startingRow > board.length || startingRow < 0 || startingCol > board[0].length || startingCol < 0) throw new IllegalArgumentException();
+    if (checkBounds(startingRow,startingCol)) throw new IllegalArgumentException();
     return solveH(startingRow,startingCol,1);
   }
 
   private boolean solveH(int row, int col, int level){
     //if loc is outside board, return false
-    if (row < 0 || row >= board.length || col < 0 || col >= board[0].length){
+    if (checkBounds(row,col)){
       return false;
     }
     //if all pieces on the board have been visited then level must be equal to 1 greater than size of board
@@ -73,12 +77,11 @@ public class KnightBoard{
   }
   public int countSolutions(int startingRow, int startingCol){
     if (!checkBoard()) throw new IllegalStateException();
-    if (startingRow > board.length || startingRow < 0 || startingCol > board[0].length || startingCol < 0) throw new IllegalArgumentException(); 
+    if (checkBounds(startingRow,startingCol)) throw new IllegalArgumentException();
     return countSolutions(startingRow,startingCol,1);
   }
   public int countSolutions(int row, int col, int level){
     int count = 0;
-    if
     return count;
   }
   public static void main(String[] args){
