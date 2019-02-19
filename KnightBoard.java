@@ -86,12 +86,10 @@ public class KnightBoard{
       return 1;
     }
     int[] v = new int[]{1,2,1,-2,-1,2,-1,-2,2,-1,2,1,-2,1,-2,-1};
-    if (board[row][col] == 0){
-      for (int i = 0; i < v.length; i+=2){
+    for (int i = 0; i < v.length; i+=2){
+      if (board[row][col] == 0){
         if (checkBounds(row,col)){
           count += countSolutions(level+1, row+v[i], col+v[i+1]);
-        }
-        if (checkBounds(row,col)){
           board[row][col] = 0;
         }
       }
