@@ -81,19 +81,24 @@ public class KnightBoard{
     return countSolutions(startingRow,startingCol,1);
   }
   public int countSolutions(int row, int col, int level){
+    //if loc is outside board, return 0
+    if (checkBounds(row,col)){
+      return 0;
+    }
     int count = 0;
     if (level == board.length * board[0].length + 1){
       return 1;
     }
+    board[row][col] = level;
     int[] v = new int[]{1,2,1,-2,-1,2,-1,-2,2,-1,2,1,-2,1,-2,-1};
     for (int i = 0; i < v.length; i+=2){
       if (board[row][col] == 0){
         if (checkBounds(row,col)){
           count += countSolutions(level+1, row+v[i], col+v[i+1]);
-          board[row][col] = 0;
         }
       }
     }
+    board[row][col] = 0;
     return count;
   }
   public static void main(String[] args){
