@@ -1,7 +1,8 @@
 public class KnightBoard{
 
   private int[][] board;
-
+  private int[] rowDir = new int[]{1,1,-1,-1,2,2,-2,-2};
+  private int[] colDir = new int[]{2,-2,2,-2,1,-1,1,-1};
   public KnightBoard(int startingRows, int startingCols){
     if (startingRows <= 0 || startingCols <= 0) throw new IllegalArgumentException();
     board = new int[startingRows][startingCols];
@@ -25,7 +26,7 @@ public class KnightBoard{
     }
     return output;
   }
-  //check to make sure row or col not out of bounds
+  //check to make see if row and col is inside or outside of the board
   public boolean checkBounds(int row, int col){
     return (row >= board.length || row < 0 || col >= board[0].length || col < 0);
   }
@@ -50,7 +51,7 @@ public class KnightBoard{
       return false;
     }
     //if all pieces on the board have been visited then level must be equal to 1 greater than size of board
-    if (level == board.length * board[0].length + 1){
+    if (level == board.length * board[0].length + 1 ){
       return true;
     }
     //if location r,c is occupied return false
@@ -85,20 +86,21 @@ public class KnightBoard{
     if (checkBounds(row,col)){
       return 0;
     }
-    int count = 0;
-    if (level == board.length * board[0].length + 1){
+    //if location r,c is occupied return 0
+    if (board[row][col] != 0){
+      return 0;
+    }
+    //if all pieces on the board have been traveled to, level will be equal to the area
+    //return 1
+    if (level == board.length * board[0].length){
       return 1;
     }
-    board[row][col] = level;
-    int[] v = new int[]{1,2,1,-2,-1,2,-1,-2,2,-1,2,1,-2,1,-2,-1};
-    for (int i = 0; i < v.length; i+=2){
-      if (board[row][col] == 0){
-        if (checkBounds(row,col)){
-          count += countSolutions(level+1, row+v[i], col+v[i+1]);
-        }
-      }
+    int count = 0;
+    for (int i = 0; i < 8; i++){
+      board[row][col] = level;
+      count += countSolutions(row+rowDir[i], col+colDir[i], level + 1);
+      board[row][col] = 0;
     }
-    board[row][col] = 0;
     return count;
   }
   public static void main(String[] args){
@@ -106,8 +108,8 @@ public class KnightBoard{
     //k.board[0][1] = 10;
     //k.board[0][2] = 1;
     //System.out.print(k.toString());
-    //System.out.println(k.solve(0,0));
-    System.out.println(k.countSolutions(0,0));
+    System.out.println(k.solve(0,0));
+    //System.out.println(k.countSolutions(0,0));
     System.out.println(k.toString());
   }
 }
