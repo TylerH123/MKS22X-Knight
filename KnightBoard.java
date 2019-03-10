@@ -1,11 +1,61 @@
-public class KnightBoard{
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 
-  private int[][] board;
+public class KnightBoard{
+  class Spot implements Comparable<Spot>{
+    int r,c,num;
+    //new class spot for a spot on board
+    public Spot(int row, int col){
+      r = row;
+      c = col;
+      num = position[r][c];
+    }
+    //return row
+    public int getRow(){
+      return r;
+    }
+    //return col
+    public int getCol(){
+      return c;
+    }
+    //return value of num
+    public int getVal(){
+      return num;
+    }
+    //change value of num
+    public void changeNum(int n) {
+      if (n > 0){
+        position[r][c] += n;
+        num += n;
+      }
+    }
+    //compare num
+    public int compareTo(Spot sp) {
+      if (getVal() > sp.getVal()){
+        return 1;
+      }
+      if (getVal() == sp.getVal()){
+        return 0;
+      }
+      return -1;
+    }
+    //string representain of spot
+    public String toString(){
+      return "[" + r + ", " + c + "]";
+    }
+  }
+  private int[][] board, position;
+  int rows,cols;
   private int[] rowDir = new int[]{1,1,-1,-1,2,2,-2,-2};
   private int[] colDir = new int[]{2,-2,2,-2,1,-1,1,-1};
   public KnightBoard(int startingRows, int startingCols){
     if (startingRows <= 0 || startingCols <= 0) throw new IllegalArgumentException();
-    board = new int[startingRows][startingCols];
+    rows = startingRows;
+    cols = startingCols;
+    board = new int[rows][cols];
+    position = new int[rows][cols];
+    fillPosition();
   }
   //string representation of the board
   public String toString(){
@@ -26,6 +76,50 @@ public class KnightBoard{
     }
     return output;
   }
+  private void fillPosition(){
+    int n = 0;
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+        if (r > 1 && c > 1 && r < (rows - 2) && c < (cols - 2)) {
+          position[r][c] = 8;
+        }
+        else {
+          for (int i = 0; i < 8; i++) {
+            int newPosX = r + rowDir[i];
+            int newPosY = c + colDir[i];
+            if (checkSpot(newPosX, newPosY)) {
+              n++;
+            }
+          }
+          position[r][c] = n;
+          n = 0;
+        }
+      }
+    }
+  }
+  //check if the spot is taken
+  private boolean checkSpot(int r, int c) {
+    return ((r >= 0) && (r < rows) && (c >= 0) && (c < cols) && (board[r][c] == 0));
+  }
+  //reorders the moves
+  private ArrayList<Spot> reorder(int r, int c) {
+    ArrayList<Spot> ary = new ArrayList<Spot>();
+    for (int i = 0; i < 8; i++) {
+      int newPosX = r + rowDir[i];
+      int newPosY = c + colDir[i];
+      if (checkSpot(newPosX, newPosY)) {
+        ary.add(new Spot(newPosX, newPosY));
+      }
+    }
+    Collections.sort(ary);
+    return ary;
+  }
+  //changes the value of the spots
+  private void changeSpot(int n, ArrayList<Spot> ary) {
+    for (Spot sp : ary) {
+      sp.changeNum(n);
+    }
+  }
   //check to make see if row and col is inside or outside of the board
   public boolean checkBounds(int row, int col){
     return (row >= board.length || row < 0 || col >= board[0].length || col < 0);
@@ -39,12 +133,11 @@ public class KnightBoard{
     }
     return true;
   }
-  public boolean solve(int startingRow, int startingCol){
+  public boolean solveSlow(int startingRow, int startingCol){
     if (!checkBoard()) throw new IllegalStateException();
     if (checkBounds(startingRow,startingCol)) throw new IllegalArgumentException();
     return solveH(startingRow,startingCol,1);
   }
-
   private boolean solveH(int row, int col, int level){
     //if loc is outside board, return false
     if (checkBounds(row,col)){
@@ -76,6 +169,39 @@ public class KnightBoard{
     }
     return false;
   }
+  //optimized solve
+  public boolean solve(int startingRow, int startingCol){
+    if (!checkBoard()) throw new IllegalStateException();
+    if (checkBounds(startingRow,startingCol)) throw new IllegalArgumentException();
+    fillPosition();
+    return solveO(startingRow, startingCol, 1);
+  }
+  public boolean solveO(int row, int col, int level){
+    //base case
+    if (level - 1 == rows * cols) {
+      return true;
+    }
+    if (level == 1) {
+      board[row][col] = level;
+      return solveO(row, col, level + 1);
+    }
+    ArrayList<Spot> om = reorder(row, col);
+    changeSpot(-1, om);
+    int oldNum = position[row][col];
+    position[row][col] = 0;
+    for (int i = 0; i < om.size(); i++) {
+      Spot sp = om.get(i);
+      int newPosX = sp.getRow();
+      int newPosY = sp.getCol();
+      board[newPosX][newPosY] = level;
+      if (solveO(newPosX, newPosY, level + 1)) {
+        return true;
+      }
+      board[newPosX][newPosY] = 0;
+    }
+    position[row][col] = oldNum;
+    return false;
+  }
   public int countSolutions(int startingRow, int startingCol){
     if (!checkBoard()) throw new IllegalStateException();
     if (checkBounds(startingRow,startingCol)) throw new IllegalArgumentException();
@@ -105,11 +231,6 @@ public class KnightBoard{
   }
   public static void main(String[] args){
     KnightBoard k = new KnightBoard(5,5);
-    //k.board[0][1] = 10;
-    //k.board[0][2] = 1;
-    //System.out.print(k.toString());
-    System.out.println(k.solve(0,0));
-    //System.out.println(k.countSolutions(0,0));
-    System.out.println(k.toString());
+
   }
 }
